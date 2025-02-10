@@ -1,0 +1,42 @@
+<% include ../template/header.ejs %>
+<style>
+    .container{
+        margin-top: 200px;
+    }
+</style>
+    <div class="container">
+        <div class="row d-flex justify-content-center " id="list_portfolio">
+           
+        </div>
+    </div>
+    <% include ../template/footer.ejs %>
+    <script>
+        let arr = [
+            {id:1  , kategori_id :1 ,portfolio:'SIMRS' ,foto:'https://fosan.id/images/fosanlogo.png' },
+            {id:2  , kategori_id :1 ,portfolio:'OSBOND GYM' ,foto:'https://fosan.id/images/fosanlogo.png' },
+            {id:3  , kategori_id :2 ,portfolio:'BPSDM' ,foto:'https://fosan.id/images/fosanlogo.png' },
+            {id:4  , kategori_id :2 ,portfolio:'Poltekkes KEMENKES Semarang' ,foto:'https://fosan.id/images/fosanlogo.png' },
+            {id:5  , kategori_id :3 ,portfolio:'MD CLINIC' ,foto:'https://fosan.id/images/fosanlogo.png' },
+            {id:6  , kategori_id :3 ,portfolio:'BAJ' ,foto:'https://fosan.id/images/fosanlogo.png' },
+        ]
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].kategori_id=='<%=id%>') {
+                
+            $('#list_portfolio').append(`
+            <div class="col-lg-4 col-xl-4 card">
+                <a href="/portfolio/kategori/detail/${arr[i].id}" style="text-decoration: none;">
+                    <div class="box-menu custom-bgc card-body">
+                        <div class="d-flex justify-content-center card-img-top">
+                            <img src="${arr[i].foto}" alt="" style="height: 100px;">
+                        </div>
+
+                        <h6 style="font-size: 12px;text-align: center;" class="mt-2">${arr[i].portfolio}</h6>
+                        <h6 style="font-size: 14px;text-align: center;" class="mt-0"><strong></strong></h6>
+                        <h6 style="font-size: 14px;text-align: center;" class="mt-0"><strong></strong></h6>
+                    </div>
+                </a>
+            </div>
+            `)}
+        }
+   
+    </script>

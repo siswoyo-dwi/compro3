@@ -1,0 +1,37 @@
+<% include ../template/header.ejs %>
+<style>
+    .container{
+        margin-top: 200px;
+    }
+</style>
+    <div class="container">
+        <div class="row d-flex justify-content-center" id="list_kategori">
+            
+        </div>
+    </div>
+    <% include ../template/footer.ejs %>
+    <script>
+           let arr = [
+            {id:1  , kategori :'Kesehatan' ,foto:'https://fosan.id/images/fosanlogo.png' },
+            {id:2  , kategori :'Edukasi' ,foto:'https://fosan.id/images/fosanlogo.png'  },
+            {id:3  , kategori :'WMS' ,foto:'https://fosan.id/images/fosanlogo.png'  },
+
+        ]
+        for (let i = 0; i < arr.length; i++) {
+            $('#list_kategori').append(`
+            <div class="col-lg-4 col-xl-4 card">
+                <a href="/portfolio/kategori/${arr[i].id}" style="text-decoration: none;">
+                    <div class="box-menu custom-bgc card-body">
+                        <div class="d-flex justify-content-center card-img-top">
+                            <img src="${arr[i].foto}" alt="" style="height: 100px;">
+                        </div>
+
+                        <h6 style="font-size: 12px;text-align: center;" class="mt-2">${arr[i].kategori}</h6>
+                        <h6 style="font-size: 14px;text-align: center;" class="mt-0"><strong></strong></h6>
+                        <h6 style="font-size: 14px;text-align: center;" class="mt-0"><strong></strong></h6>
+                    </div>
+                </a>
+            </div>
+            `)            
+        }
+    </script>

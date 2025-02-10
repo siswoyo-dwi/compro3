@@ -25,7 +25,7 @@ var cek_login_all = require('./isine/login.js').cek_login_all;
 
 // FE
 var basic = require('./isine/basic.js');
-
+var portfolio = require('./isine/portfolio.js')
 
 // BO
 // API
@@ -97,6 +97,7 @@ var io = require('socket.io').listen(server, { log: false });
 
 //mulai apps ----------------------------------------------------------
 app.use('/autentifikasi', login);
+app.use('/portfolio',portfolio)
 app.use('/peta', peta);
 app.use('/upload', upload);
 // app.use('/upload_shp', upload_shp);
