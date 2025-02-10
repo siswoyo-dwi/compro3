@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap');
+
+body{
+    font-family: "Inter Tight", sans-serif;
+}
+
+
+h1,h2,h3,h4,h5,h6{
+	margin: 0;
+	padding: 0;
+}
+
+.w-100{
+	width: 100%;
+}
+
+.w-100-flex{
+	width: 100%;
+	display: flex;
+}
+
+.box{
+	width: 100%;
+	padding: 30px;
+	border-radius: 10px;
+	background-color: #fff;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

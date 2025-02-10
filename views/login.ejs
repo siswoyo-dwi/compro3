@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<% let rooturl = ''; %>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta content="" name="description" />
+        <meta content="themes-lab" name="author" content="Pemerintah Kabupaten Kudus"/>
+        <link rel="shortcut icon" href="<%= rooturl %>/images/backoffice/shortcut_icon.ico">
+        <title>Backoffice</title>
+        <link href="<%= rooturl %>/stylesheets/backoffice/style.css" rel="stylesheet">
+        <link href="<%= rooturl %>/stylesheets/backoffice/ui.css" rel="stylesheet">
+        
+        <style type="text/css">
+        h1,h2,h3,h4,h5,h6{
+            margin:0;
+            padding: 0;
+        }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-md-offset-4 col-xl-offset-4">
+                    <div style="width: 100%;height: 100vh;background-color: transparent;display: flex;justify-content: center;align-items: center;">
+                        <div style="width: 100%;height: fit-content;background-color: rgba(255, 255, 255, 0.5);padding: 20px 30px;border-radius: 10px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                            <h2 style="color: #000;"><strong>LOGIN BACKOFFICE</strong></h2>
+                            <!-- <h5 style="text-align: left;color: #000;font-weight: bold;">SISTEM INFORMASI JALAN</h5>
+                            <h5 style="text-align: left;color: #000;font-weight: bold;">KABUPATEN KUDUS</h5> -->
+                            <hr style="margin-top: 10px;margin-bottom: 10px;">
+
+                            <form role="form" action="<%= rooturl %>/autentifikasi/login" method="post">
+                                <div style="width: 100%;display: flex;justify-content: center;align-items: center;margin-bottom: 10px;">
+                                    <span style="color: red;font-weight: bold;"> <%=pesan%></span>
+                                </div>
+                                <input type="hidden" name="tipe" value="2"/>
+
+                                <div class="append-icon">
+                                    <input type="hidden" name="tujuan" value="<%=tujuan%>"/>
+                                    <input type="text" name="username" class="form-control form-white username" placeholder="Masukkan Username" >
+                                    <i class="icon-user"></i>
+                                </div>
+                                <div class="append-icon m-t-10 m-b-10">
+                                    <input type="password" name="password" class="form-control form-white password" placeholder="Masukkan Password" >
+                                    <i class="icon-lock"></i>
+                                </div>
+
+                                <div style="width: 100%;padding:10px;background-color: white;margin-bottom: 10px;">
+                                    <h5 style="color:#636e7b !important;margin-bottom: 10px;">Captcha</h5>
+                                    <div style="background-color: whitesmoke;border-radius: 10px;display: flex;justify-content: center;align-items: center;">
+                                       
+                                        <%-captcha.data%>
+                                    </div>
+                             
+                                    <div class="m-t-20">
+                                        <input type="text" class="form-control  form-white" id="captcha" name="captcha" placeholder="Masukkan hasil penjumlahan pada captcha">
+                                    </div>
+                                </div>
+                                <button type="submit"  class="btn btn-primary btn-block ladda-button btn-embossed" data-style="expand-left">Log In</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="<%= rooturl %>/plugins/jquery/jquery-1.11.1.min.js"></script>
+        <script src="<%= rooturl %>/plugins/jquery/jquery-migrate-1.2.1.min.js"></script>
+        <script src="<%= rooturl %>/plugins/gsap/main-gsap.min.js"></script>
+        <script src="<%= rooturl %>/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script src="<%= rooturl %>/plugins/backstretch/backstretch.min.js"></script>
+        <script type="text/javascript">
+            $.backstretch(["<%= rooturl %>/images/backoffice/gallery/bg4.jpg", "<%= rooturl %>/images/backoffice/gallery/bg3.jpg", "<%= rooturl %>/images/backoffice/gallery/bg2.jpg", "<%= rooturl %>/images/backoffice/gallery/bg1.jpg"], {
+                fade: 600,
+                duration: 4000
+            });
+            
+        </script>
+    </body>
+
+</html>

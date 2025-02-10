@@ -1,0 +1,1 @@
+var rooturl2 ="/pusdataru";  

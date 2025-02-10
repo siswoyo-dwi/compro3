@@ -1,0 +1,147 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <label for="" class="col-sm-3 control-label">Username</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="username" name="username" >
+                </div>
+              </div>
+
+              <div class="form-group" id="password_tag">
+                <label for="" class="col-sm-3 control-label">Password</label>
+                <div class="col-sm-9">
+                  <div style="position: relative;background-color: ;">
+                    <input type="password" class="form-control" id="pwd" name="pwd" >
+                    <i class="fa fa-eye-slash" id="iconne" aria-hidden="true" style="position: absolute;right:0;top:8px;font-size: 16px;cursor: pointer;" onclick="myFunction()"></i>
+                  </div>
+                  <p class="help-block">Pastikan password Anda minimal 10 karakter dan mengandung huruf besar, huruf kecil, dan angka.</p>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="" class="col-sm-3 control-label">Nama Lengkap</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="fullname" name="fullname" >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="" class="col-sm-3 control-label">NIP</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="NIP" name="NIP" >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="" class="col-sm-3 control-label">Email</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="email" name="email" >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="" class="col-sm-3 control-label">No. Telepon </label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="telp" name="telp" >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="" class="col-sm-3 control-label">Role </label>
+                <div class="col-sm-9">
+                  <select name="role" class="form-control" id="role" required>
+                    <option value="">-- Pilih --</option>
+                    <option value="1">Administrator</option>
+                    <option value="2">OPD Dinas</option>
+                    <option value="3">OPD Kecamatan</option>
+                    <option value="4">OPD Kelurahan</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" id="konten-dinas">
+                <label for="" class="col-sm-3 control-label">Dinas </label>
+                <div class="col-sm-9">
+                  <select name="" class="form-control" id="dinas_id" data-search="true">
+                    <option value="">-- Pilih --</option>
+                    
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" id="konten-kecamatan">
+                <label for="" class="col-sm-3 control-label">Kecamatan </label>
+                <div class="col-sm-9">
+                  <select name="" class="form-control" id="id_kec" data-search="true">
+                    <option value="">-- Pilih --</option>
+                    
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" id="konten-kelurahan">
+                <label for="" class="col-sm-3 control-label">Kelurahan </label>
+                <div class="col-sm-9">
+                  <select name="" class="form-control" id="id_kel" data-search="true">
+                    <option value="">-- Pilih --</option>
+                    
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                  <button type="button" onclick="submit()" class="btn btn-primary btn-embossed">Simpan</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<script>
+  async function load_data(params) {
+   let dinas = await $.get(`/dinas/list`)
+   let kecamatan = await $.get(`/kecamatan`)
+    for (let i = 0; i < dinas.data.length; i++) {
+      $('#dinas_id').append(`<option value="${dinas.data[i].dinas_id}">${dinas.data[i].dinas}</option>`)
+    }
+    for (let i = 0; i < kecamatan.data.length; i++) {
+      $('#id_kec').append(`<option value="${kecamatan.data[i].id_kecamatan}">${kecamatan.data[i].kecamatan}</option>`)
+    }
+  }
+  $('#id_kec').change(async function () {
+    $('#id_kel').empty()
+      $('#id_kel').append(`<option value="">-- Pilih --</option>`)
+    let kelurahan = await $.get(`/kelurahan/`+ $('#id_kec').val())
+    for (let i = 0; i < kelurahan.data.length; i++) {
+      $('#id_kel').append(`<option value="${kelurahan.data[i].id_kelurahan}">${kelurahan.data[i].kelurahan}</option>`)
+    }
+  })
+  function hide() {
+    $('#konten-dinas').hide()
+    $('#konten-kecamatan').hide()
+    $('#konten-kelurahan').hide()
+  }
+  hide()
+
+  $('#role').change(function () {
+    hide()
+    if ($('#role').val()==2) {
+      $('#konten-dinas').show()
+    }else  if ($('#role').val()==3) {
+      $('#konten-kecamatan').show()
+    }else  if ($('#role').val()==4) {
+      $('#konten-kecamatan').show()
+      $('#konten-kelurahan').show()
+    }
+  })
+</script>

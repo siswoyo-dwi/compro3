@@ -1,0 +1,121 @@
+<% include ../../template-backoffice/header.ejs %>
+<% let rooturl = ''; %>
+
+
+<!-- BEGIN PAGE CONTENT -->
+<div class="page-content">
+  <div class="header">
+    <h2><strong>Edit Data Basic</strong></h2>
+    <div class="breadcrumb-wrapper">
+      <ol class="breadcrumb">
+        <li><a href="<%= rooturl %>/backoffice">Dashboard</a></li>
+        <li><a href="<%= rooturl %>/manajemen_basic">Data</a></li>
+        <li class="active">Edit Data</li>
+      </ol>
+    </div>
+  </div>
+  
+  <% include ./komponen.ejs %>
+
+  <div class="footer">
+    <% include ../../template-backoffice/copyright.ejs %>
+  </div>
+</div>
+<!-- END PAGE CONTENT -->
+
+<% include ../../template-backoffice/footer.ejs %>
+<script type="text/javascript">
+  var rooturl = ''
+  let data_basic = {}
+  window.onload =async function (params) {window.onload =async function (params) {
+    await $.get('/api_basic/list?data_basic_id=').then(function (data) {
+      data_basic = data.data[0]
+      for (const i in data_basic) {
+        if (Object.hasOwnProperty.call(data_basic, i)) {
+          if (i.substring(0,4)=='foto') {
+            if (data_basic[i]) {
+              $('#lihat_'+i).append(`<a href="/foto/${data_basic[i]}" class="btn btn-dark btn-sm btn-embossed" target="_blank">Lihat File</a>`)
+            }
+          }else if(i.substring(i.length-2,i.length)=='id'){
+            $('#'+i).val(data_basic[i]).select2()
+          }else if (i.substring(0,3)=='ket'){        
+            CKEDITOR.instances[i].setData(data_basic[i])
+          }else{
+            $('#'+i).val(data_basic[i])
+          }
+        }
+      }
+    })
+  }
+
+  async function submit() {
+    const will_update = await swal({
+      title: "Edit Data",
+      text: "Apakah anda akan mengedit data ini?",
+      icon: "warning",
+      dangerMode: true,
+      buttons: ["Tidak", "Ya"],
+    });        
+    
+    if ( will_update) {
+      $('#button_submit').empty()
+      $('#button_submit').append('<button class="btn btn-primary btn-embossed" disabled>Simpan</button>')
+    
+      let formData = new FormData();    
+      // nama kolom db
+      let arr = ['NamaKolomDb1', 'NamaKolomDb2', 'NamaKolomDb3']
+    
+      formData.append('data_basic_id', data_basic.data_basic_id);
+
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].substring(0,4)=='foto') {
+          if ( $(`#`+arr[i])[0].files[0]){
+            formData.append(arr[i], $(`#`+arr[i])[0].files[0]);
+          } 
+        }else if (arr[i].substring(0,3)=='ket'){        
+          formData.append(arr[i] ,CKEDITOR.instances[arr[i]].getData())
+        }else{
+          formData.append(arr[i],$('#'+arr[i]).val())
+        }
+      }
+
+      $.ajax({
+        type: 'POST',
+        enctype: 'multipart/form-data',
+        url: rooturl+'/api_basic/edit',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+          swal({title:'Berhasil',text:'Data berhasil diedit', icon: "success", buttons:false, type:'success'})
+          window.location.href = rooturl+'/manajemen_basic';
+        },error: function(data) {
+          swal({title:'Gagal',text:'Data gagal diedit', icon: "eror", type:'error'})
+        }
+      })      
+    } 
+  }
+
+  // CKEDITOR.replace( 'keterangan', {
+  //   toolbarGroups: [
+  //     { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+  //     { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+  //     { name: 'links', groups: [ 'links' ] },
+  //     { name: 'insert', groups: [ 'insert' ] },
+  //     { name: 'forms', groups: [ 'forms' ] },
+  //     { name: 'tools', groups: [ 'tools' ] },
+  //     { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+  //     { name: 'others', groups: [ 'others' ] },
+  //     '/',
+  //     { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+  //     { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+  //     { name: 'styles', groups: [ 'styles' ] },
+  //     { name: 'colors', groups: [ 'colors' ] },
+  //     { name: 'about', groups: [ 'about' ] }
+  //   ],
+    
+  //   removeButtons: 'Underline,Subscript,Superscript,About,Image,Styles,Format',
+  //   height: 310
+  // });
+
+</script>

@@ -1,0 +1,349 @@
+<% include ../template-backoffice/header.ejs %>
+
+<!-- BEGIN PAGE CONTENT -->
+<div class="page-content">
+  <div class="header">
+    <h2><strong>Dashboard</strong></h2>
+    <!-- <div class="breadcrumb-wrapper">
+      <ol class="breadcrumb">
+        <li class="active">Dashboard</li>
+      </ol>
+    </div> -->
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Filter 
+      </button>
+      <div class="collapse" id="collapseExample">
+        <div class="well" style="background-color: #fff;">
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label for="" class="col-sm-2 control-label">Kecamatan</label>
+              <div class="col-sm-10">
+                <select name="" id="id_kec" class="form-control" data-search="true">
+                  <option value="">-- Pilih --</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="col-sm-2 control-label">Kelurahan</label>
+              <div class="col-sm-10">
+                <select name="" id="id_kel" class="form-control" data-search="true">
+                  <option value="">-- Pilih --</option>
+                </select>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <label for="" class="col-sm-2 control-label">Jenis</label>
+              <div class="col-sm-10">
+                <select name="" id="jenis_usulan" class="form-control" data-search="true">
+                  <option value="">-- Pilih --</option>
+                  <option value="Jalan">-- Jalan --</option>
+                  <option value="Saluran">-- Saluran --</option>
+                  <option value="Talud">-- Talud --</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="col-sm-2 control-label">Asal Usulan</label>
+              <div class="col-sm-10">
+                <select name="" id="asal_usulan" class="form-control" data-search="true">
+                  <option value="">-- Pilih --</option>
+                  <option value="DINAS PERUMAHAN DAN KAWASAN PERMUKIMAN">DINAS PERUMAHAN DAN KAWASAN PERMUKIMAN</option>
+                  <option value="KECAMATAN">KECAMATAN</option>
+                  <option value="KELURAHAN">KELURAHAN</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="col-sm-2 control-label">Tahun</label>
+              <div class="col-sm-10">
+                <select name="" id="tahun" class="form-control" data-search="true">
+                  <option value="">-- Pilih --</option>
+                  <%for(let i = new Date().getFullYear() ;i>new Date().getFullYear()-10 ; i--){%>
+                    <option value="<%=i%>">-- <%=i%> --</option>
+
+                    <%}%>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary btn-embossed" onclick="load_data()">Filter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 col-lg-4">
+      <div class="alert alert-warning" role="alert">
+        <h4 style="font-weight: 500;">Total Program Pembangunan<br/>Kota Semarang</h4>
+        <h1><strong id="count_all">0000</strong></h1>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-lg-4">
+      <div class="alert alert-success" role="alert">
+        <h4 style="font-weight: 500;">Jumlah Program Pembangunan<br/>Yang Sudah Dilakukan Digitasi</h4>
+        <h1><strong id="count_seg">0000</strong></h1>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-lg-4">
+      <div class="alert alert-danger" role="alert">
+        <h4 style="font-weight: 500;">Jumlah Program Pembangunan<br/>Yang Belum Dilakukan Digitasi</h4>
+        <h1><strong id="count_non_seg">0000</strong></h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-lg-8">
+          <div style="width: 100%;height: 500px" id="chart_digitasi"></div>
+      </div>
+      <div class="col-md-4 col-lg-4">
+        <table class="table table-bordered" id="data">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Kecamatan</th>
+                    <th>Digitasi</th>
+                    <th>Non Digitasi</th>
+                    <th>Persentase</th>
+                </tr>
+            </thead>
+
+            <tbody>
+          
+               
+            </tbody>
+        </table>
+    </div>
+  </div>
+  </div>
+  
+  <div class="footer">
+    <% include ../template-backoffice/copyright.ejs %>
+  </div>
+</div>
+<!-- END PAGE CONTENT -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Kelurahan</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-horizontal">
+          <table class="table table-bordered" id="data2">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Kelurahan</th>
+                    <th>Digitasi</th>
+                    <th>Non Digitasi</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+          
+               
+            </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% include ../template-backoffice/footer.ejs %>
+<script>
+ let data_table=  $('#data').DataTable({    
+        "language": {    
+            "sProcessing":   "Sedang memproses...",    
+            "sLengthMenu":   "_MENU_",    
+            "sZeroRecords":  "Tidak ditemukan data yang sesuai",    
+            "sInfo":         "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",    
+            "sInfoEmpty":    "Menampilkan 0 sampai 0 dari 0 entri",    
+            "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",    
+            "sInfoPostFix":  "",    
+            "sUrl":          "",    
+            "oPaginate": {    
+                "sFirst":    "Pertama",    
+                "sPrevious": "<",    
+                "sNext":     ">",    
+                "sLast":     "Terakhir"    
+            }    
+        },    
+        "bFilter": false,
+        "processing": true,
+      "processing": true,
+      "ajax":  `${rooturl}/data/table_digitasi`,
+      "columns": [
+        { "data": null},
+        { "data": null,render:function(data){return `<a href="#"  data-toggle="modal" data-target="#myModal"  onclick="digi_kel(${data.id},'${data.label}')">${data.label}</a>`}},
+        { "data": 'jml_digitasi'},
+        { "data": 'jml_non_digitasi'},
+        { "data": 'persertase_digitasi'},
+     ],
+        "columnDefs": [
+          { "width": "100px", "targets": 0}
+        ],
+    });
+    data_table.on( 'draw.dt', function () {
+        let PageInfo = $('#data').DataTable().page.info();
+        data_table.column(0, { page: 'current' }).nodes().each( function (cell, i) {
+            cell.innerHTML = i + 1 + PageInfo.start;
+        } );
+      });  
+      let data_table2=  $('#data2').DataTable({    
+        "language": {    
+            "sProcessing":   "Sedang memproses...",    
+            "sLengthMenu":   "_MENU_",    
+            "sZeroRecords":  "Tidak ditemukan data yang sesuai",    
+            "sInfo":         "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",    
+            "sInfoEmpty":    "Menampilkan 0 sampai 0 dari 0 entri",    
+            "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",    
+            "sInfoPostFix":  "",    
+            "sUrl":          "",    
+            "oPaginate": {    
+                "sFirst":    "Pertama",    
+                "sPrevious": "<",    
+                "sNext":     ">",    
+                "sLast":     "Terakhir"    
+            }    
+        },    
+        "bFilter": false,
+        "processing": true,
+      "processing": true,
+      "ajax":  `${rooturl}/data/table_digitasi?id_kec=0`,
+      "columns": [
+        { "data": null},
+        { "data": 'label'},
+        { "data": 'jml_digitasi'},
+        { "data": 'jml_non_digitasi'},
+     ],
+        "columnDefs": [
+          { "width": "100px", "targets": 0}
+        ],
+    });
+    data_table2.on( 'draw.dt', function () {
+        let PageInfo = $('#data2').DataTable().page.info();
+        data_table2.column(0, { page: 'current' }).nodes().each( function (cell, i) {
+            cell.innerHTML = i + 1 + PageInfo.start;
+        } );
+      });  
+      function digi_kel(id,kec) {
+        data_table2.ajax.url( `${rooturl}/data/table_digitasi?id_kec=`+id).load();
+        $('#myModalLabel').html(kec)
+      }
+    async function load_data(params) {
+    let get_user = await $.get(`/get_user`)
+    $('#username_login').html(`Hi , `+get_user.data.fullname)
+    let count_all = await $.post(`/data/list`,{count:1,tahun:$('#tahun').val(),asal_usulan:$('#asal_usulan').val(),jenis_usulan:$('#jenis_usulan').val(),id_kec:$('#id_kec').val(),id_kel:$('#id_kel').val()})
+    $('#count_all').html(count_all.data[0].jml)
+    let post2 = {count:1,tahun:$('#tahun').val(),asal_usulan:$('#asal_usulan').val(),jenis_usulan:$('#jenis_usulan').val(),id_kec:$('#id_kec').val(),id_kel:$('#id_kel').val()}
+    let post3 = {count:1,jml_segmen:1,tahun:$('#tahun').val(),asal_usulan:$('#asal_usulan').val(),jenis_usulan:$('#jenis_usulan').val(),id_kec:$('#id_kec').val(),id_kel:$('#id_kel').val()}
+    if (get_user.data.role==2) {
+      a += `&asal_usulan=${get_user.data.dinas}`
+    }
+    if (get_user.data.role==3) {
+      post2.asal_usulan = 'KECAMATAN'
+      post3.asal_usulan = 'KECAMATAN'
+      a +=`&id_kec=${get_user.data.id_kec}`
+      a += `&asal_usulan=KECAMATAN`
+    }
+    if (get_user.data.role==4) {
+      post2.asal_usulan = 'KELURAHAN'
+      post3.asal_usulan = 'KELURAHAN'
+      a+=`&id_kel=${get_user.data.id_kel}`
+      a += `&asal_usulan=KELURAHAN`
+
+    }
+    let count_id = await $.post(`/data/list`,post2)
+    let count_seg = await $.post(`/data/list`,post3)
+
+    $('#count_id').html(count_id.data[0].jml)
+    $('#count_seg').html(count_seg.data[0].jml)
+    $('#count_non_seg').html(count_id.data[0].jml-count_seg.data[0].jml)
+    
+    // let data_chart_digi = await $.post(`/data/chart_digitasi`,{jml_segmen:1,asal_usulan:$('#asal_usulan').val(),id_kec:$('#id_kec').val(),id_kel:$('#id_kel').val(),tahun:$('#tahun').val(),jenis_usulan:$('#jenis_usulan').val()})
+    // let data_chart_nondigi = await $.post(`/data/chart_digitasi`,{jml_segmen:0,asal_usulan:$('#asal_usulan').val(),id_kec:$('#id_kec').val(),id_kel:$('#id_kel').val(),tahun:$('#tahun').val(),jenis_usulan:$('#jenis_usulan').val()})
+    // console.log([data_chart_digi,data_chart_nondigi]);
+    let arr = []
+    let arr2 =[]
+    let data_chart_digi = await $.get(`/data/table_digitasi?id_kec=${$('#id_kec').val()}&id_kel=${$('#id_kel').val()}&tahun=${$('#tahun').val()}&jenis_usulan=${$('#jenis_usulan').val()}&asal_usulan=${$('#asal_usulan').val()}`)
+    
+    for (let i = 0; i < data_chart_digi.data.length; i++) {
+        arr.push({label:data_chart_digi.data[i].label,y:data_chart_digi.data[i].jml_digitasi})    
+        arr2.push({label:data_chart_digi.data[i].label,y:data_chart_digi.data[i].jml_non_digitasi})      
+  
+    }
+    var chart_digitasi = new CanvasJS.Chart("chart_digitasi",{
+                axisX:{
+                    labelFontSize: 14,
+                    interval:1,
+                    labelAngle: 30,
+                },
+                axisY:{
+                    labelFontSize: 14,
+                    suffix: "%"
+                },
+                toolTip: {
+                    shared: true,
+                },
+                legend:{
+                    fontSize: 16,
+                },
+                data: [{
+                        type: "stackedColumn100",
+                        name: "Digitasi",
+                        indexLabel: "#percent %",
+                        indexLabelPlacement: "inside",
+                        indexLabelFontColor: "white",
+                        showInLegend: "true",
+                        indexLabelFontSize:12,
+                        toolTipContent: "<b>{label}</b> - {name} : #percent % ({y})",
+                        // dataPoints: kec4
+                        dataPoints:arr
+                    },
+                    {
+                        type: "stackedColumn100",
+                        name: 'Non Digitasi',
+                        indexLabel: "#percent %",
+                        indexLabelPlacement: "inside",
+                        indexLabelFontColor: "white",
+                        showInLegend: "true",
+                        indexLabelFontSize:12,
+                        toolTipContent: "<b>{label}</b> - {name} : #percent % ({y})",
+                        // dataPoints: kec4
+                        dataPoints:arr2
+                    }
+                  ]
+            });
+            chart_digitasi.render();
+  }
+  window.onload = async function (params) {
+    let kecamatan = await $.get(`/kecamatan`)
+    for (let i = 0; i < kecamatan.data.length; i++) {
+      $('#id_kec').append(`<option value="${kecamatan.data[i].id_kecamatan}">${kecamatan.data[i].kecamatan}</option>`)
+    }
+  }
+  
+  $('#id_kec').change(async function () {
+    $('#id_kel').empty()
+      $('#id_kel').append(`<option value="">-- Pilih --</option>`)
+    let kelurahan = await $.get(`/kelurahan/`+ $('#id_kec').val())
+    for (let i = 0; i < kelurahan.data.length; i++) {
+      $('#id_kel').append(`<option value="${kelurahan.data[i].id_kelurahan}">${kelurahan.data[i].kelurahan}</option>`)
+    }
+  })
+  load_data()
+  setInterval(load_data, 120000);
+
+</script>
